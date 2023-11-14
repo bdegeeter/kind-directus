@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: directus-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: directus
+  template:
+    metadata:
+      labels:
+        app: directus
+    spec:
+      containers:
+        - name: directus
+          image: directus/directus:latest # Use your image path if custom
+          ports:
+            - containerPort: 8055
+          env:
+            - name: DB_CLIENT
+              value: 'pg'
+            - name: DB_CONNECTION_STRING
+              value: 'postgresql://directususer:yourpassword@postgres-service:5432/directusdb'
+            - name: KEY
+              value: '7d6bb4ff-634a-4d4d-a9bb-2d713e1342cf'
+            - name: SECRET
+              value: 'ac3c73d6-7799-4358-acd4-41febc3cfbcc'
+            - name: PUBLIC_URL
+              value: https://directus.localtest.me/cms
+            #- name: ROOT_REDIRECT
+            #  value: ./cms
+            - name: ADMIN_PASSWORD
+              value: d1r3ctu5
+            - name: ADMIN_EMAIL
+              value: admin@example.com

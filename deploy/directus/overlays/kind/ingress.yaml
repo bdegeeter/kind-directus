@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: directus
+  annotations:
+    # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
+    ingress.kubernetes.io/proxy-body-size: 100M
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #ingress.kubernetes.io/app-root: '/'
+    #nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  rules:
+    - host: directus.localtest.me
+      http:
+        paths:
+          - path: /cms(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: directus-service
+                port:
+                  number: 8055
